@@ -1,5 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Kufi_Arabic } from "next/font/google";
 import "./globals.css";
+const notoKufi = Noto_Kufi_Arabic({
+    subsets: ["arabic"],
+    weight: ["400", "500", "600", "700"], // choose weights you need
+    variable: "--font-noto-kufi",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,9 +23,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="ar" dir={`rtl`}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${notoKufi.variable} ${notoKufi.variable} antialiased`}
       >
         {children}
       </body>
