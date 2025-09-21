@@ -4,8 +4,6 @@ const backgroundImage = "../../../2213787.jpg";
 export default function CourseHeader({
   title,
   shortDescription,
-  duration,
-  price,
 }) {
   return (
     <div className="relative text-white">
@@ -20,7 +18,7 @@ export default function CourseHeader({
       <div className="absolute inset-0 bg-black/60" />
 
       {/* Content on top */}
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="grid lg:grid-cols-3 gap-8 items-center">
           {/* Title and description */}
           <div className="lg:col-span-2">

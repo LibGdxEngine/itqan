@@ -5,7 +5,7 @@ import InstructorSection from "../../components/course/InstructorSection";
 import ModulesSection from "../../components/course/ModulesSection";
 import FAQSection from "../../components/course/FAQSection";
 import CourseSidebar from "../../components/course/CourseSidebar"; // your sidebar component
-import osama from "@/public/osama.jpg";
+import osama from "../../../public/osama.jpg";
 
 const courseData = {
   slug: "usul-al-fiqh",
@@ -83,8 +83,6 @@ export default function CourseDetail() {
       <CourseHeader
         title={courseData.title}
         shortDescription={courseData.shortDescription}
-        duration={courseData.duration}
-        price={courseData.price}
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
