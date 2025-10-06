@@ -1,27 +1,15 @@
-const courses = [
-    {
-        title: "دورة أصول الفقه",
-        desc: "دورة شاملة في أصول الفقه الإسلامي تغطي القواعد الأساسية والمتقدمة مع التطبيقات العملية",
-        duration: "⏱ 40 ساعة",
-        price: "299 درهم",
-        badge: "الأكثر مبيعاً",
-    },
-    {
-        title: "علوم القرآن الكريم",
-        desc: "تعرف على علوم القرآن من التفسير والتجويد وأسباب النزول والناسخ والمنسوخ",
-        duration: "⏱ 35 ساعة",
-        price: "249 درهم",
-        badge: "جديد",
-    },
-    {
-        title: "السيرة النبوية",
-        desc: "دراسة شاملة ومفصلة لسيرة النبي محمد صلى الله عليه وسلم والدروس المستفادة منها",
-        duration: "⏱ 25 ساعة",
-        price: "199 درهم",
-    },
-];
+"use client";
+
+import { useCourses } from "@/app/hooks/useCourses";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Courses() {
+    const { courses, loading, error } = useCourses();
+
+    if (loading) return <p className="text-center py-10">جارٍ تحميل الدورات...</p>;
+    if (error) return <p className="text-center py-10 text-red-500">خطأ في تحميل الدورات</p>;
+
     return (
         <section id="courses" className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-6">
@@ -31,34 +19,75 @@ export default function Courses() {
                 <p className="text-center text-gray-600 mb-12">
                     اختر من بين مجموعة متنوعة من الدورات المسجلة
                 </p>
+
                 <div className="grid md:grid-cols-3 gap-8">
-                    {courses.map((c, i) => (
-                        <div
-                            key={i}
-                            className="bg-white rounded-2xl shadow hover:shadow-lg border border-blue-100 overflow-hidden transition"
+                    {courses.map((c) => (
+                        <Link
+                            key={c.id}
+                            href={`/courses/${c.slug || c.id}`} // fallback to id if slug missing
+                            className="group bg-white rounded-2xl shadow hover:shadow-xl border border-blue-100 overflow-hidden transition flex flex-col cursor-pointer"
                         >
-                            <div className="relative h-48 bg-gradient-to-br from-blue-900 to-blue-500 flex items-center justify-center">
-                                {c.badge && (
-                                    <span className="absolute top-4 right-4 bg-amber-500 text-white text-sm px-3 py-1 rounded-full shadow">
-                    {c.badge}
+                            {/* Cover Image */}
+                            <div className="relative h-48 w-full">
+                                <Image
+                                    src={c.cover_image}
+                                    alt={c.title}
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                {c.is_published ? (
+                                    <span className="absolute top-4 right-4 bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow">
+                    متاح
+                  </span>
+                                ) : (
+                                    <span className="absolute top-4 right-4 bg-gray-500 text-white text-sm px-3 py-1 rounded-full shadow">
+                    قريباً
                   </span>
                                 )}
-                                <span className="text-5xl text-white/70">▶</span>
                             </div>
-                            <div className="p-6">
-                                <h3 className="font-amiri text-xl text-blue-900 mb-2">
+
+                            {/* Content */}
+                            <div className="flex-1 p-6 flex flex-col">
+                                <h3 className="font-amiri text-xl text-blue-900 mb-2 group-hover:text-blue-700 transition">
                                     {c.title}
                                 </h3>
-                                <p className="text-gray-600 mb-4 leading-relaxed">{c.desc}</p>
-                                <div className="flex justify-between items-center border-t border-blue-100 pt-3">
-                                    <span className="text-gray-500">{c.duration}</span>
-                                    <span className="font-bold text-blue-500">{c.price}</span>
+
+                                {/* Professors */}
+                                {c.professors?.length > 0 && (
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <Image
+                                            src={c.professors[0].image}
+                                            alt={c.professors[0].name}
+                                            width={40}
+                                            height={40}
+                                            className="rounded-full object-cover"
+                                        />
+                                        <div>
+                                            <p className="text-sm font-semibold text-gray-700">
+                                                {c.professors[0].name}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {c.professors[0].description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Duration + Level */}
+                                <div className="flex justify-between text-sm text-gray-500 mb-3">
+                                    <span>⏱ {c.duration} ساعة</span>
+                                    <span>📘 المستوى: {c.level}</span>
                                 </div>
-                                <button className="mt-4 w-full py-2 rounded-lg bg-gradient-to-br from-blue-900 to-blue-500 text-white font-bold hover:from-blue-500 hover:to-blue-400 transition">
-                                    التسجيل الآن
-                                </button>
+
+                                {/* Price */}
+                                <div className="flex justify-between items-center mt-auto border-t border-blue-100 pt-3">
+                                    <span className="font-bold text-blue-600">{c.price} درهم</span>
+                                    <span className="px-4 py-2 rounded-lg bg-gradient-to-br from-blue-900 to-blue-500 text-white font-bold group-hover:from-blue-500 group-hover:to-blue-400 transition">
+                    التسجيل الآن
+                  </span>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>

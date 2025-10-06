@@ -10,6 +10,7 @@ import {
   Calendar,
   Globe,
 } from "lucide-react";
+import apiClient from "@/app/lib/api/client";
 
 // Mock data for dropdowns
 const nationalities = [
@@ -185,47 +186,65 @@ export default function RegistrationForm() {
     }
 
     setErrors(newErrors);
-    alert("eror");
     return Object.keys(newErrors).length === 0;
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
 
-    if (!validateForm()) {
-      return;
-    }
+        setIsSubmitting(true);
 
-    setIsSubmitting(true);
+        try {
+            // 1. Prepare username from full name
+            const username = formData.fullName.trim().replace(/\s+/g, "_");
 
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+            // 2. Call signup endpoint
+            const signupRes = await apiClient.post("/auth/signup/", {
+                username,
+                email: formData.email,
+                password: formData.password,
+            });
 
-      // Here you would typically send the data to your backend
-      console.log("Registration data:", formData);
-      alert("تم التسجيل بنجاح! سيتم تحويلك إلى صفحة تسجيل الدخول.");
+            // 3. Get token (if returned) or login after signup
+            // Assuming your backend returns a token after signup
+            const token = signupRes.data?.token;
+            if (token) {
+                localStorage.setItem("token", token);
+                apiClient.defaults.headers.common["Authorization"] = `Token ${token}`;
+            }
 
-      // Reset form
-      setFormData({
-        fullName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        phone: "",
-        gender: "",
-        age: "",
-        nationality: "",
-        currentCountry: "",
-      });
-    } catch (error) {
-      console.error("Registration error:", error);
-      alert("حدث خطأ أثناء التسجيل. يرجى المحاولة مرة أخرى.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+            // 4. Update profile with extra fields
+            await apiClient.put("/auth/profile/", {
+                full_name: formData.fullName,
+                gender: formData.gender,
+                phone_number: formData.phone,
+                age: formData.age,
+                nationality: formData.nationality,
+                country: formData.currentCountry,
+            });
+
+            window.location.href = "/profile";
+
+            // Reset form
+            setFormData({
+                fullName: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                phone: "",
+                gender: "",
+                age: "",
+                nationality: "",
+                currentCountry: "",
+            });
+        } catch (error) {
+            console.error("Registration error:", error.response?.data || error.message);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
   return (
     <div
@@ -428,7 +447,7 @@ export default function RegistrationForm() {
                     <input
                       type="radio"
                       name="gender"
-                      value="male"
+                      value="M"
                       checked={formData.gender === "male"}
                       onChange={handleInputChange}
                       className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
@@ -439,7 +458,7 @@ export default function RegistrationForm() {
                     <input
                       type="radio"
                       name="gender"
-                      value="female"
+                      value="F"
                       checked={formData.gender === "female"}
                       onChange={handleInputChange}
                       className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"

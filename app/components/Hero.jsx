@@ -52,7 +52,7 @@ export default function Hero() {
                                 <br />
                                 <span className="text-gray-900">بمنهجية </span>
                                 <span className="relative">
-                                    <span className="text-gray-900">عصرية</span>
+                                    <span className="text-gray-900">راسخة</span>
                                     <svg className="absolute -bottom-2 left-0 w-full" height="8" viewBox="0 0 200 8">
                                         <path d="M 0 6 Q 100 0 200 6" stroke="url(#gradient)" strokeWidth="3" fill="none"/>
                                         <defs>

@@ -10,7 +10,7 @@ export default function InstructorSection({ instructor }) {
         <div className="flex-shrink-0">
           <img
             className="w-20 h-20 rounded-full object-cover border-4 border-blue-100"
-            src={instructor.photo}
+            src={instructor.image}
             alt={instructor.name}
           />
         </div>
@@ -18,7 +18,7 @@ export default function InstructorSection({ instructor }) {
           <h3 className="text-xl font-bold text-gray-900 mb-2">
             {instructor.name}
           </h3>
-          <p className="text-gray-600 leading-relaxed">{instructor.bio}</p>
+          <p className="text-gray-600 leading-relaxed">{instructor.description}</p>
         </div>
       </div>
     </section>

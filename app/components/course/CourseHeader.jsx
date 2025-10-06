@@ -1,16 +1,20 @@
 import { Clock } from "lucide-react";
-const backgroundImage = "../../../2213787.jpg";
+import Image from "next/image";
 
 export default function CourseHeader({
   title,
   shortDescription,
+    cover_photo
 }) {
+    console.log(cover_photo)
   return (
     <div className="relative text-white">
       {/* Actual image */}
-      <img
-        src={backgroundImage}
+      <Image
+        src={cover_photo}
         alt=""
+        width={1000}
+        height={1000}
         className="absolute inset-0 w-full h-full object-cover"
       />
 
@@ -22,7 +26,7 @@ export default function CourseHeader({
         <div className="grid lg:grid-cols-3 gap-8 items-center">
           {/* Title and description */}
           <div className="lg:col-span-2">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-right">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-right">
               {title}
             </h1>
             <p className="text-lg md:text-xl text-blue-100 text-right leading-relaxed">
