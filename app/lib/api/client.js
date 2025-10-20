@@ -5,6 +5,7 @@ const apiClient = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
+    credentials: "include"
 });
 
 // Attach token from localStorage or cookie
@@ -23,7 +24,7 @@ apiClient.interceptors.response.use(
         if (error.response?.status === 401) {
             // Token expired → redirect or clear session
             localStorage.removeItem("token");
-            window.location.href = "/login";
+            // window.location.href = "/login";
         }
         return Promise.reject(error);
     }

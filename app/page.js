@@ -5,6 +5,7 @@ import Features from "@/app/components/Features";
 import Courses from "@/app/components/Courses";
 import Stats from "@/app/components/Stats";
 import Footer from "@/app/components/Footer";
+import InstructorsSection from "@/app/components/instructors";
 
 
 export default function Home() {
@@ -14,7 +15,8 @@ export default function Home() {
           <Hero />
           <Features />
           <Courses />
-          <Stats />
+          {/*<Stats />*/}
+          <InstructorsSection />
           <Footer />
       </main>
   );

@@ -54,7 +54,7 @@ export default function LoginPage() {
             await login(formData.email, formData.password);
 
             // redirect after success
-            window.location.href = "/dashboard";
+            window.location.href = "/";
         } catch (error) {
             console.error("Login error:", error);
             setErrors({ general: "خطأ في البريد الإلكتروني أو كلمة المرور" });

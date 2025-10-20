@@ -5,7 +5,6 @@ export const useApi = (endpoint, options = {}, deps = []) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         let cancel = false;
         const fetchData = async () => {

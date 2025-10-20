@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Next.js Frontend
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextjs-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      - API_BASE_URL=${API_BASE_URL}
+    networks:
+      - app-network
+    depends_on:
+      - nginx
+    env_file:
+      - .env
+
+
+
+
+  # Database (PostgreSQL) - Uncomment if needed
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: postgres-db
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_DB=${POSTGRES_DB}
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - app-network
+
+  # Redis (for caching) - Uncomment if needed
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: redis-cache
+  #   restart: unless-stopped
+  #   networks:
+  #     - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  nginx-ssl:
+  # postgres_data:

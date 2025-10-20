@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import {useEffect, useState} from "react";
+import {useParams} from "next/navigation";
 
 import apiClient from "@/app/lib/api/client";
 import CourseHeader from "@/app/components/course/CourseHeader";
@@ -9,9 +9,11 @@ import InstructorSection from "@/app/components/course/InstructorSection";
 import ModulesSection from "@/app/components/course/ModulesSection";
 import FAQSection from "@/app/components/course/FAQSection";
 import CourseSidebar from "@/app/components/course/CourseSidebar";
+import {useUser} from "@/app/hooks/useUser";
 
 export default function CourseDetail() {
-    const { id } = useParams();
+    const {id} = useParams();
+    const {user} = useUser();
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -31,13 +33,14 @@ export default function CourseDetail() {
                 setLoading(false);
             }
         }
+
         if (id) fetchCourse();
     }, [id]);
 
     if (loading) return <p className="text-center py-20">جارٍ التحميل...</p>;
     if (error) return <p className="text-center py-20 text-red-500">حدث خطأ أثناء تحميل الدورة</p>;
     if (!course) return <p className="text-center py-20">لم يتم العثور على الدورة</p>;
-    console.log(course)
+
     return (
         <div className="min-h-screen bg-gray-50" dir="rtl">
 
@@ -51,7 +54,7 @@ export default function CourseDetail() {
                 <div className="grid lg:grid-cols-3 gap-12">
                     {/* Main Content */}
                     <div className="lg:col-span-2 space-y-12">
-                        <InstructorSection instructor={course.professors[0]} />
+                        <InstructorSection instructor={course.professors[0]}/>
 
                         <ModulesSection
                             modules={course.modules}
@@ -60,6 +63,8 @@ export default function CourseDetail() {
                                 setExpandedModule(expandedModule === i ? null : i)
                             }
                             courseId={course.id}
+                            is_unlocked={course.is_unlocked}
+                            is_authenticated={user !== null}
                         />
 
                         <FAQSection

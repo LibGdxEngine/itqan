@@ -17,9 +17,9 @@ export default function PersonalInfo({
           </label>
           <input
             type="text"
-            value={userProfile.fullName}
+            value={userProfile.full_name}
             onChange={(e) =>
-              setUserProfile({ ...userProfile, fullName: e.target.value })
+              setUserProfile({ ...userProfile, full_name: e.target.value })
             }
             className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
@@ -45,9 +45,9 @@ export default function PersonalInfo({
           </label>
           <input
             type="tel"
-            value={userProfile.phone}
+            value={userProfile.phone_number}
             onChange={(e) =>
-              setUserProfile({ ...userProfile, phone: e.target.value })
+              setUserProfile({ ...userProfile, phone_number: e.target.value })
             }
             className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
@@ -107,22 +107,22 @@ export default function PersonalInfo({
           </label>
           <input
             type="text"
-            value={userProfile.currentCountry}
+            value={userProfile.country}
             onChange={(e) =>
-              setUserProfile({ ...userProfile, currentCountry: e.target.value })
+              setUserProfile({ ...userProfile, country: e.target.value })
             }
             className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
         </div>
       </div>
 
-      <div className="flex justify-end">
-        <SaveButton
-          section="personal"
-          handleSave={handleSave}
-          saveStates={saveStates}
-        />
-      </div>
+      {/*<div className="flex justify-end">*/}
+      {/*  <SaveButton*/}
+      {/*    section="personal"*/}
+      {/*    handleSave={handleSave}*/}
+      {/*    saveStates={saveStates}*/}
+      {/*  />*/}
+      {/*</div>*/}
     </div>
   );
 }

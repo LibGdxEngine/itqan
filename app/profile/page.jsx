@@ -1,18 +1,21 @@
 "use client";
-import { useState } from "react";
-import { User, BookOpen, Shield, Settings, Menu, X } from "lucide-react";
+import {useState} from "react";
+import {User, BookOpen, Shield, Settings, Menu, X} from "lucide-react";
 import PersonalInfo from "../components/profile/PersonalInfo";
 import MyCourses from "../components/profile/MyCourses";
 import ChangePassword from "../components/profile/ChangePassword";
 import SettingsSection from "../components/profile/Settings";
-import { useUser } from "@/app/hooks/useUser";
-import { useAuth } from "@/app/hooks/useAuth";
+import {useUser} from "@/app/hooks/useUser";
+import {useAuth} from "@/app/hooks/useAuth";
 import apiClient from "@/app/lib/api/client";
+import ProtectedLayout from "@/app/components/ProtectedLayout";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function ArabicDashboard() {
-    const { user: profile, loading, setUser, error } = useUser();
-    const { logout } = useAuth();
-
+    const {user: profile, loading, error} = useUser();
+    const {logout} = useAuth();
+    const [currentUser, setCurrentUser] = useState(profile);
     const [activeSection, setActiveSection] = useState("personal");
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [saveStates, setSaveStates] = useState({});
@@ -59,31 +62,31 @@ export default function ArabicDashboard() {
     ];
 
     const navigationItems = [
-        { id: "personal", label: "البيانات الشخصية", icon: User },
-        { id: "courses", label: "الدورات المسجلة", icon: BookOpen },
-        { id: "security", label: "كلمة المرور / الأمان", icon: Shield },
-        { id: "settings", label: "الإعدادات", icon: Settings },
+        {id: "personal", label: "البيانات الشخصية", icon: User},
+        {id: "courses", label: "الدورات المسجلة", icon: BookOpen},
+        {id: "security", label: "كلمة المرور / الأمان", icon: Shield},
+        {id: "settings", label: "الإعدادات", icon: Settings},
     ];
 
     // Save handler for personal info & profile update
     const handleSave = async (section, data) => {
-        setSaveStates((prev) => ({ ...prev, [section]: "saving" }));
+        setSaveStates((prev) => ({...prev, [section]: "saving"}));
         try {
             if (section === "personal") {
                 const res = await apiClient.put("/profile/", data);
-                setUser(res.data); // update local user state
+                setCurrentUser(res.data); // update local user state
             }
             if (section === "security") {
                 await apiClient.post("/auth/change-password/", data); // requires you to implement this endpoint
             }
             // other sections like settings can be saved locally or via API
-            setSaveStates((prev) => ({ ...prev, [section]: "success" }));
+            setSaveStates((prev) => ({...prev, [section]: "success"}));
         } catch (err) {
             console.error("Save error:", err.response?.data || err.message);
-            setSaveStates((prev) => ({ ...prev, [section]: "error" }));
+            setSaveStates((prev) => ({...prev, [section]: "error"}));
         } finally {
             setTimeout(
-                () => setSaveStates((prev) => ({ ...prev, [section]: "idle" })),
+                () => setSaveStates((prev) => ({...prev, [section]: "idle"})),
                 3000
             );
         }
@@ -95,13 +98,13 @@ export default function ArabicDashboard() {
                 return (
                     <PersonalInfo
                         userProfile={profile}
-                        setUserProfile={setUser}
+                        setUserProfile={setCurrentUser}
                         handleSave={(data) => handleSave("personal", data)}
                         saveStates={saveStates}
                     />
                 );
             case "courses":
-                return <MyCourses enrolledCourses={enrolledCourses} />;
+                return <MyCourses />;
             case "security":
                 return (
                     <ChangePassword
@@ -129,13 +132,13 @@ export default function ArabicDashboard() {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <p>تحميل...</p>;
     if (error) return <p className="text-red-500">فشل تحميل الملف الشخصي</p>;
 
     return (
-        <div className="min-h-screen bg-gray-50" dir="rtl">
+        <ProtectedLayout className="min-h-screen bg-gray-50" dir="rtl">
             {/* Header */}
-            <header className="bg-gradient-to-l from-blue-600 via-blue-700 to-blue-800 text-white shadow-lg">
+            <header className="bg-gradient-to-l  text-white shadow-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center gap-4">
@@ -144,24 +147,27 @@ export default function ArabicDashboard() {
                                 className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
                             >
                                 {isMobileMenuOpen ? (
-                                    <X className="w-5 h-5" />
+                                    <X className="w-5 h-5"/>
                                 ) : (
-                                    <Menu className="w-5 h-5" />
+                                    <Menu className="w-5 h-5"/>
                                 )}
                             </button>
-                            <h1 className="text-xl font-bold">منصة التعلم الإلكتروني</h1>
+                            <Link href="/" className="flex items-center gap-2 group">
+                                <Image src="/itqan_logo.png" alt="itqan" width={40} height={40}/>
+                            </Link>
+
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                                <User className="w-4 h-4" />
+                            <div className="w-8 h-8 bg-gray-200 gray-800 rounded-full flex items-center justify-center">
+                                <User className="text-gray-800 w-4 h-4"/>
                             </div>
-                            <span className="hidden sm:block font-medium">
+                            <span className="hidden  text-gray-800 sm:block font-medium">
                 {profile?.full_name}
               </span>
                             <button
                                 onClick={logout}
-                                className="ml-4 bg-white/20 px-3 py-1 rounded-md hover:bg-white/30 text-sm"
+                                className="cursor-pointer ml-4 text-gray-800 bg-gray-200 px-3 py-1 rounded-md hover:bg-gray-400 text-sm"
                             >
                                 تسجيل الخروج
                             </button>
@@ -176,8 +182,9 @@ export default function ArabicDashboard() {
                     <aside className="hidden lg:block w-64 space-y-2">
                         <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
                             <div className="text-center space-y-3">
-                                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                                    <User className="w-8 h-8 text-blue-600" />
+                                <div
+                                    className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                                    <User className="w-8 h-8 text-blue-600"/>
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-gray-900">
@@ -200,7 +207,7 @@ export default function ArabicDashboard() {
                                                     : "hover:bg-gray-100 text-gray-700"
                                             }`}
                                         >
-                                            <Icon className="w-4 h-4" />
+                                            <Icon className="w-4 h-4"/>
                                             <span className="font-medium">{item.label}</span>
                                         </button>
                                     );
@@ -211,9 +218,7 @@ export default function ArabicDashboard() {
 
                     {/* Mobile Tabs */}
                     <div
-                        className={`lg:hidden ${
-                            isMobileMenuOpen ? "block" : "hidden"
-                        } mb-6`}
+                        className={`md:hidden ${isMobileMenuOpen ? "block" : "hidden"} mb-6`}
                     >
                         <div className="bg-white rounded-xl border border-gray-200 p-4">
                             <div className="grid grid-cols-2 gap-2">
@@ -232,7 +237,7 @@ export default function ArabicDashboard() {
                                                     : "hover:bg-gray-100 text-gray-700"
                                             }`}
                                         >
-                                            <Icon className="w-4 h-4" />
+                                            <Icon className="w-4 h-4"/>
                                             <span className="font-medium">{item.label}</span>
                                         </button>
                                     );
@@ -256,8 +261,9 @@ export default function ArabicDashboard() {
                             {renderContent()}
                         </div>
                     </main>
+
                 </div>
             </div>
-        </div>
+        </ProtectedLayout>
     );
 }

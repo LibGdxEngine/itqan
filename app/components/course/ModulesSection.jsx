@@ -1,12 +1,25 @@
 import {BookOpen, ChevronDown, CheckCircle} from "lucide-react";
 import Link from "next/link";
+import {toast} from "react-toastify";
 
 export default function ModulesSection({
                                            modules,
                                            expandedModule,
                                            toggleModule,
                                            courseId,
+                                           is_unlocked = false,
+                                           is_authenticated = false,
                                        }) {
+
+    const handleClickWhenNotAuthOrLocked = (e) => {
+        e.preventDefault();
+      if (!is_authenticated) {
+          toast.success('قم بتسجيل الدخول أولا');
+      }
+        if (!is_unlocked) {
+            toast.success('لم تقم بشراء هذه الدورة بعد');
+        }
+    }
     return (
         <section className="bg-white rounded-2xl p-8 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-right flex items-center">
@@ -45,12 +58,19 @@ export default function ModulesSection({
                                             className="flex items-center justify-start text-right"
                                         >
                                             <CheckCircle className="ml-3 h-4 w-4 text-green-500 flex-shrink-0"/>
-                                            <Link
-                                                href={`/courses/${courseId}/lessons/${lesson.id}`}
+                                            {is_unlocked && is_authenticated ? <Link
+
+                                                href={`/courses/${courseId}/learn/`}
                                                 className="text-gray-700 hover:text-blue-600 cursor-pointer transition-colors"
                                             >
                                                 {lesson.title}
-                                            </Link>
+                                            </Link> : <span
+                                                onClick={handleClickWhenNotAuthOrLocked}
+                                                className="text-gray-700 hover:text-blue-600 cursor-pointer transition-colors">
+                                                     {lesson.title}
+                                            </span>}
+
+
                                         </li>
                                     ))}
                                 </ul>

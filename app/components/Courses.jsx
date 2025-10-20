@@ -33,6 +33,8 @@ export default function Courses() {
                                     src={c.cover_image}
                                     alt={c.title}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    priority
                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
                                 {c.is_published ? (

@@ -9,5 +9,6 @@ export const ENDPOINTS = {
     COURSES: {
         LIST: "/courses/",
         DETAIL: (slug) => `/courses/${slug}/`,
+        MY_COURSES:  `/my-courses/`,
     },
 };
