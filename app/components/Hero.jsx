@@ -168,6 +168,9 @@ export default function Hero() {
                             height={900}
                             className="w-full h-auto object-cover"
                             priority
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                            }}
                         />
                     </div>
                 </div>

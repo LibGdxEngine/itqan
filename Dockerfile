@@ -1,33 +1,50 @@
-# Use the official Node.js 18 Alpine image
+# -------------------------------
+# Base image
+# -------------------------------
 FROM node:18-alpine AS base
 
-# Install dependencies only when needed
+# Set working directory
+WORKDIR /app
+
+# -------------------------------
+# Dependencies
+# -------------------------------
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
 
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
 
-# Build the Next.js app
+# Install all deps (including devDeps, needed for build)
+RUN npm install
+
+# -------------------------------
+# Build stage
+# -------------------------------
 FROM base AS builder
 WORKDIR /app
+
+# Copy deps from previous stage
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED 1
+
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Build Next.js app
 RUN npm run build
 
-# Production image, copy only necessary assets and use Next.js built-in server
+# -------------------------------
+# Production runner
+# -------------------------------
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy built output and static assets
+# Copy necessary output only
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
@@ -36,6 +53,5 @@ COPY --from=builder /app/package.json ./package.json
 USER nextjs
 
 EXPOSE 3000
-
-# Use the official Next.js start command
 CMD ["npm", "start"]
+

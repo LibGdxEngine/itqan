@@ -12,7 +12,7 @@ export const generateMetadata = (pageData) => {
   } = pageData;
 
   const fullTitle = title ? `${title} | إتقان - منصة التعلم الإلكتروني` : 'إتقان - منصة التعلم الإلكتروني';
-  const fullDescription = description || 'منصة إتقان للتعلم الإلكتروني - دورات تدريبية عالية الجودة في البرمجة والتقنية';
+  const fullDescription = description || 'منصة إتقان للتعلم الإلكتروني - دورات تدريبية عالية الجودة في العلوم الشرعية';
   const fullCanonical = canonical || 'https://إتقان.com';
   const fullOgImage = ogImage || 'https://إتقان.com/og-image.jpg';
 
@@ -105,7 +105,7 @@ export const generateOrganizationSchema = () => {
     "@type": "EducationalOrganization",
     "name": "إتقان - منصة التعلم الإلكتروني",
     "alternateName": "Itqan Learning Platform",
-    "description": "منصة إتقان للتعلم الإلكتروني - دورات تدريبية عالية الجودة في البرمجة والتقنية",
+    "description": "منصة إتقان للتعلم الإلكتروني - دورات تدريبية عالية الجودة في العلوم الشرعية",
     "url": "https://إتقان.com",
     "logo": "https://إتقان.com/itqan_logo.png",
     "image": "https://إتقان.com/og-image.jpg",

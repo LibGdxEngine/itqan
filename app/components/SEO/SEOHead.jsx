@@ -12,7 +12,7 @@ const SEOHead = ({
   noindex = false 
 }) => {
   const fullTitle = title ? `${title} | إتقان - منصة التعلم الإلكتروني` : 'إتقان - منصة التعلم الإلكتروني';
-  const fullDescription = description || 'منصة إتقان للتعلم الإلكتروني - دورات تدريبية عالية الجودة في البرمجة والتقنية';
+  const fullDescription = description || 'منصة إتقان للتعلم الإلكتروني - دورات تدريبية عالية الجودة في العلوم الشرعية';
   const fullCanonical = canonical || 'https://إتقان.com';
   const fullOgImage = ogImage || 'https://إتقان.com/og-image.jpg';
 

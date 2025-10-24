@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 export async function GET(req, context) {
     const {courseSlug, lessonId} = await context.params;
-    const backendUrl = `http://localhost:8000/api/courses/${courseSlug}/lessons/${lessonId}/stream/`;
+    const backendUrl = `https://xn--kgbei0hva.com/api/courses/${courseSlug}/lessons/${lessonId}/stream/`;
     const cookieStore = cookies();
     const token = cookieStore.get("token")?.value;
 

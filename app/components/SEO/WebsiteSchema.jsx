@@ -8,7 +8,7 @@ const WebsiteSchema = () => {
     "@type": "EducationalOrganization",
     "name": "إتقان - منصة التعلم الإلكتروني",
     "alternateName": "Itqan Learning Platform",
-    "description": "منصة إتقان للتعلم الإلكتروني - دورات تدريبية عالية الجودة في البرمجة والتقنية",
+    "description": "منصة إتقان للتعلم الإلكتروني - دورات تدريبية عالية الجودة في العلوم الشرعية",
     "url": "https://إتقان.com",
     "logo": "https://إتقان.com/itqan_logo.png",
     "image": "https://إتقان.com/og-image.jpg",
@@ -31,7 +31,7 @@ const WebsiteSchema = () => {
     "offers": {
       "@type": "Offer",
       "category": "Online Courses",
-      "description": "دورات تدريبية في البرمجة والتقنية"
+      "description": "دورات تدريبية في العلوم الشرعية"
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",

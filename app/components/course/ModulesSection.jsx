@@ -3,7 +3,7 @@ import Link from "next/link";
 import {toast} from "react-toastify";
 
 export default function ModulesSection({
-                                           modules,
+                                           modules = [],
                                            expandedModule,
                                            toggleModule,
                                            courseId,
@@ -20,6 +20,20 @@ export default function ModulesSection({
             toast.success('لم تقم بشراء هذه الدورة بعد');
         }
     }
+
+    if (!modules || modules.length === 0) {
+        return (
+            <section className="bg-white rounded-2xl p-8 shadow-sm">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 text-right flex items-center">
+                    <BookOpen className="ml-3 h-6 w-6 text-blue-600"/> محتوى الدورة
+                </h2>
+                <div className="text-center py-8">
+                    <p className="text-gray-500">لا توجد وحدات متاحة لهذه الدورة</p>
+                </div>
+            </section>
+        );
+    }
+
     return (
         <section className="bg-white rounded-2xl p-8 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-right flex items-center">
@@ -52,7 +66,7 @@ export default function ModulesSection({
                         {expandedModule === index && (
                             <div className="px-6 py-4 bg-white border-t border-gray-100">
                                 <ul className="space-y-3">
-                                    {module.lessons.map((lesson) => (
+                                    {module.lessons && module.lessons.length > 0 ? module.lessons.map((lesson) => (
                                         <li
                                             key={lesson.id}
                                             className="flex items-center justify-start text-right"
@@ -72,7 +86,11 @@ export default function ModulesSection({
 
 
                                         </li>
-                                    ))}
+                                    )) : (
+                                        <li className="text-gray-500 text-center py-2">
+                                            لا توجد دروس متاحة لهذه الوحدة
+                                        </li>
+                                    )}
                                 </ul>
                             </div>
                         )}

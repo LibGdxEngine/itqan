@@ -38,7 +38,9 @@ export default function CourseSidebar({ price, duration, modulesCount }) {
                 <div className="text-center space-y-6">
                     {/* Price */}
                     <div>
-                        <div className="text-3xl font-bold text-gray-900 mb-2">{price}</div>
+                        <div className="text-3xl font-bold text-gray-900 mb-2">
+                            {price || "غير محدد"}
+                        </div>
                         <p className="text-gray-600">سعر الدورة الكاملة</p>
                     </div>
 
@@ -46,11 +48,11 @@ export default function CourseSidebar({ price, duration, modulesCount }) {
                     <div className="flex items-start flex-col space-y-4 text-right">
                         <div className="flex items-center justify-end">
                             <Clock className="ml-2 h-4 w-4 text-gray-500" />
-                            <span className="text-gray-700">المدة: {duration}</span>
+                            <span className="text-gray-700">المدة: {duration || "غير محدد"}</span>
                         </div>
                         <div className="flex items-center justify-end">
                             <BookOpen className="ml-2 h-4 w-4 text-gray-500" />
-                            <span className="text-gray-700">{modulesCount} وحدات تعليمية</span>
+                            <span className="text-gray-700">{modulesCount || 0} وحدات تعليمية</span>
                         </div>
                         <div className="flex items-center justify-end">
                             <CheckCircle className="ml-2 h-4 w-4 text-gray-500" />

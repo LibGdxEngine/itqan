@@ -29,14 +29,24 @@ export default function Courses() {
                         >
                             {/* Cover Image */}
                             <div className="relative h-48 w-full">
-                                <Image
-                                    src={c.cover_image}
-                                    alt={c.title}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                    priority
-                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
+                                {c.cover_image ? (
+                                    <Image
+                                        src={c.cover_image}
+                                        alt={c.title}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                        priority
+                                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                        unoptimized
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                        }}
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                                        <span className="text-blue-600 text-2xl">📚</span>
+                                    </div>
+                                )}
                                 {c.is_published ? (
                                     <span className="absolute top-4 right-4 bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow">
                     متاح
@@ -57,13 +67,23 @@ export default function Courses() {
                                 {/* Professors */}
                                 {c.professors?.length > 0 && (
                                     <div className="flex items-center gap-3 mb-4">
-                                        <Image
-                                            src={c.professors[0].image}
-                                            alt={c.professors[0].name}
-                                            width={40}
-                                            height={40}
-                                            className="rounded-full object-cover"
-                                        />
+                                        {c.professors[0].image ? (
+                                            <Image
+                                                src={c.professors[0].image}
+                                                alt={c.professors[0].name}
+                                                width={40}
+                                                height={40}
+                                                className="rounded-full object-cover"
+                                                unoptimized
+                                                onError={(e) => {
+                                                    e.target.style.display = 'none';
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                <span className="text-blue-600 text-sm">👨‍🏫</span>
+                                            </div>
+                                        )}
                                         <div>
                                             <p className="text-sm font-semibold text-gray-700">
                                                 {c.professors[0].name}
