@@ -12,13 +12,25 @@ export default function InstructorsSection() {
     const API_URL = process.env.NEXT_PUBLIC_MEDIA_URL;
 
     useEffect(() => {
-
+        console.log("Fetching instructors from:", process.env.NEXT_PUBLIC_API_URL);
+        console.log("API client base URL:", apiClient.defaults.baseURL);
+        
         async function fetchInstructors() {
             try {
+                console.log("Making API call to /instructors/");
+                // Test with direct fetch first
+                const directResponse = await fetch('https://xn--kgbei0hva.com/api/instructors/');
+                console.log("Direct fetch response:", directResponse.status);
+                const directData = await directResponse.json();
+                console.log("Direct fetch data:", directData);
+                
+                // Now try with axios
                 const res = await apiClient.get(`/instructors/`);
+                console.log("API response:", res.data);
                 setInstructors(res.data);
             } catch (err) {
                 console.error("Failed to fetch instructors:", err);
+                console.error("Error details:", err.response?.data || err.message);
                 setError(err);
             } finally {
                 setLoading(false);
@@ -27,6 +39,35 @@ export default function InstructorsSection() {
 
         fetchInstructors();
     }, []);
+
+    if (loading) {
+        return (
+            <section className="bg-gradient-to-b from-blue-50 to-white py-20">
+                <div className="max-w-7xl mx-auto px-6 text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+                        المشايخ والمحاضرون
+                    </h2>
+                    <p className="text-blue-700 mb-12 max-w-2xl mx-auto leading-relaxed">
+                        نخبة من العلماء والمدرسين لتقديم العلوم الشرعية بأسلوب منهجي.
+                    </p>
+                    <p className="text-center py-10">جارٍ تحميل المشايخ...</p>
+                </div>
+            </section>
+        );
+    }
+
+    if (error) {
+        return (
+            <section className="bg-gradient-to-b from-blue-50 to-white py-20">
+                <div className="max-w-7xl mx-auto px-6 text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+                        المشايخ والمحاضرون
+                    </h2>
+                    <p className="text-red-600">خطأ في تحميل البيانات: {error.message}</p>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="bg-gradient-to-b from-blue-50 to-white py-20">
